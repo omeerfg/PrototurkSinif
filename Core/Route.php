@@ -1,11 +1,12 @@
 <?php
 
-
 namespace Prototurk\Core;
 
+use Prototurk\Core\Helpers\Redirect;
 
 class Route
 {
+
     public static array $patterns = [
         ':id[0-9]?' => '([0-9]+)',
         ':url[0-9]?' => '([0-9a-zA-Z-_]+)'
@@ -123,15 +124,14 @@ class Route
     }
 
     /**
-     * @param string $prefix
+     * @param $prefix
      * @return Route
      */
-    public static function prefix(string $prefix): Route
+    public static function prefix($prefix): Route
     {
         self::$prefix = $prefix;
         return new self();
     }
-
 
     /**
      * @param \Closure $closure
@@ -140,6 +140,19 @@ class Route
     {
         $closure();
         self::$prefix = '';
+    }
+
+    public function where($key, $pattern)
+    {
+        self::$patterns[':' . $key] = '(' . $pattern . ')';
+    }
+
+    public static function redirect($from, $to, $status = 301)
+    {
+        self::$routes['get'][$from] = [
+            'redirect' => $to,
+            'status' => $status
+        ];
     }
 
 }

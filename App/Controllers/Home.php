@@ -1,13 +1,13 @@
 <?php
 
-
 namespace Prototurk\App\Controllers;
-
 
 class Home
 {
+
     public function index()
     {
-        echo "Burası Anasayfa";
+        return route('user', ['id1' => 5, 'id2' => 6]);
     }
+
 }
